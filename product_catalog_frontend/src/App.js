@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import "./styles.css";
 import { applyCssVars } from "./theme";
-import { fetchFacetOptions, fetchProducts } from "./api/client";
+import { getFacetOptions, listProducts } from "./api/productsService";
 import SidebarFilters from "./components/SidebarFilters";
 import ProductGrid from "./components/ProductGrid";
 import ProductDetailModal from "./components/ProductDetailModal";
@@ -44,7 +44,7 @@ function App() {
   // Facets
   useEffect(() => {
     let mounted = true;
-    fetchFacetOptions()
+    getFacetOptions()
       .then((facets) => {
         if (!mounted) return;
         setPriceBounds({ min: facets?.price?.min ?? 0, max: facets?.price?.max ?? 1000 });
@@ -76,7 +76,7 @@ function App() {
     let mounted = true;
     setLoading(true);
     setLoadError("");
-    fetchProducts(query)
+    listProducts(query)
       .then((res) => {
         if (!mounted) return;
         setItems(res.results || []);
